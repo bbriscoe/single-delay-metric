@@ -4,15 +4,15 @@
 
 ## Introduction
 
-A real-time application discards any packet that arrives after its play-out deadline. So, for real-time media, a median delay metric is a distraction---waiting for the median delay before play-out would discard half the packets. To characterize the delay experienced by an application it would be more useful to quote the delay of a high percentile of packets. But which percentile? The 99th? The 99.99th? The 98th? The answer depends on how much loss the application can conceal (1%, 0.01% or 2% in the above examples, assuming no other losses) and is therefore application-dependent. Nonetheless, it would be useful to settle on a single industry-wide metric to characterize delay.
+Many real-time interactive applications discard any packet that arrives after its play-out deadline (typically implemented by a de-jitter buffer). This is true for real-time media applications (telephony, video conferencing) and for many multiplayer online games.  So, for these kinds of applications, a median delay metric is a distraction---waiting for the median delay before play-out would discard half the packets. To characterize the delay experienced by an application it would be more useful to quote the delay of a high percentile of packets. But which percentile? The 99th? The 99.99th? The 98th? The answer depends on the implementation and relates to how much path delay the application can tolerate and how much loss the application can conceal (1%, 0.01% or 2% in the above examples, assuming no other losses) and is therefore application-dependent. Nonetheless, it would be useful to settle on a single industry-wide metric to characterize delay.
 
 This brief discussion paper aims to start a debate on whether a percentile is the best single delay metric and, if so, which percentile the industry should converge on.
 
 ## Don't we need two metrics?
 
-In systems that aim for a certain delay, it has been common to quote mean delay and jitter. However, if the distribution of delay is asymmetric, which it often is, the size of the lower-than-average delay should not be allowed to counterbalance a long tail of above-average delay. As long as packets arrive before their play-out time it doesn't matter how much before.
+In systems that aim for a certain delay, it has been common to quote mean delay and jitter. However, if the distribution of delay is asymmetric, which it often is, the size of the lower-than-average delay should not be allowed to counterbalance a long tail of above-average delay. As long as packets arrive before their play-out time it doesn't matter how much before. Further the jitter metric has been defined has been defined multiple ways in different contexts, and so is not generally meaningful.
 
-The argument for a single percentile delay metric is strongest for real-time media. But a low delay metric is also important for non-real-time applications, e.g. web. Here, average delay is indeed important. But still, the user's perception is dominated by the small proportion of longer delays [xref]. Thus, a single high percentile delay metric would be as useful or more so than just mean or median delay. {ToDo: can this argument be bolstered up?}
+The argument for a single percentile delay metric is strongest for real-time media and multiplayer online games. But a low delay metric is also important for non-real-time applications, e.g. web. Here, average delay is indeed important. But still, the user's perception is dominated by the small proportion of longer delays [xref]. Thus, a single high percentile delay metric would be as useful or more so than just mean or median delay. {ToDo: can this argument be bolstered up?}
 
 Indeed, arguments can be made for more than one delay metric to better characterize the delay distribution. But, if we can settle on a single metric, we should, for the sake of simplicity---simplicity for users and the regulators that represent them, and simplicity in measurement techniques and equipment. A single metric would not preclude anyone quoting other delay metrics, as long as they also quoted the one metric that everyone else quoted.
 
@@ -20,7 +20,7 @@ Indeed, arguments can be made for more than one delay metric to better character
 
 The factors that influence the choice of percentile are:
 
-* The degree of late packet discard that can be efficiently concealed by real-time media coding (both that which is typical today and that which could be typical in future).
+* The amount of "residual delay" typically produced by the adaptive de-jitter buffer implementations used by real-time media and multiplayer online games.
 * The duration to produce results.
   For instance, to measure 99th percentile delay requires of the order of 1,000 packets minimum (an order of magnitude greater than 1/(1 - 0.99) = 100). In contrast 99.999th percentile requires 1,000,000 packets. At a packet rate of say 10k packet/s, they would take respectively 100 ms or 100 s.
   * The latter would be impractical to display live, while the former makes it possible to display the 99th percentile in a GUI nearly immediately after a flow has started.
