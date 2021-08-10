@@ -12,7 +12,7 @@ This brief discussion paper aims to start a debate on whether a percentile is th
 
 In systems that aim for a certain delay, it has been common to quote mean delay and jitter. However, if the distribution of delay is asymmetric, which it often is, the size of the lower-than-average delay should not be allowed to counterbalance a long tail of above-average delay. As long as packets arrive before their play-out time it doesn't matter how much before.
 
-The argument for a single percentile delay metric is strongest for real-time media. But a low delay metric is also important for non-real-time applications, e.g. web. Here, average delay is indeed important. But still, the user's perception is dominated by the small proportion of longer delays [xref]. Thus, a single high percentile delay metric would be as useful or more so than just mean or median delay. {ToDo: can this argument be bolstered up?}
+The argument for a single percentile delay metric is strongest for real-time media [[Bouch00](#Bouch00)], [[Yim11](#Yim11)]. But a low delay metric is also important for non-real-time applications, e.g. web. Here, average delay is indeed important. But still, the user's perception is dominated by the small proportion of longer delays [[Wilson11](#Wilson11)]. Thus, a single high percentile delay metric would be as useful or more so than just mean or median delay. {ToDo: can this argument be bolstered up?}
 
 Indeed, arguments can be made for more than one delay metric to better characterize the delay distribution. But, if we can settle on a single metric, we should, for the sake of simplicity---simplicity for users and the regulators that represent them, and simplicity in measurement techniques and equipment. A single metric would not preclude anyone quoting other delay metrics, as long as they also quoted the one metric that everyone else quoted.
 
@@ -41,7 +41,7 @@ The 'benchmark effect': As soon as a single metric is settled on, researchers, p
 P99 is expressed as a delay or queuing delay, and therefore has a number of undesirable features for an industry-wide metric:
 
 * Larger is not better.
-  * It might be possible to invert the metric [x-ref RPM], but rounds per minute carries an implication that it is only for repetitive tasks, which would limit the scope of the metric
+  * It might be possible to invert the metric [[RPM21](#RPM21)], but rounds per minute carries an implication that it is only for repetitive tasks, which would limit the scope of the metric
 * It is measured in time units (ms) that seem too small to matter, and which are not common currency for a lay person
   * This might also be addressed by inverting the metric
 * It's not immediately obvious why the particular percentile has been chosen.
@@ -56,4 +56,14 @@ P99 is expressed as a delay or queuing delay, and therefore has a number of unde
 The IETF seems like an appropriate body to define such a metric, across countries, across standards bodies, and across industry sectors. IPPM would seem to be the appropriate WG.
 
 Is there interest in taking this forward?
+
+## References
+
+<a name="Bouch00"></a>[Bouch00] Bouch, Anna & Sasse, M. Angela, "[The case for predictable network service](https://discovery.ucl.ac.uk/id/eprint/20139/)," In Proc. Multimedia Computing and Networking Conference (MMCN'2000), 188--195 (2000).
+
+<a name="RPM21"></a>[RPM21] Stuart Cheshire & Vidhi Goel, "[Reduce network delays for your app](https://developer.apple.com/videos/play/wwdc2021/10239/)" Apple Worldwide Developer Conference'21 (Jun 2021).
+
+<a name="Wilson11"></a>[Wilson11] Wilson, Christo; Ballani, Hitesh; Karagiannis, Thomas & Rowtron, Ant, "[Better Never than Late: Meeting Deadlines in Datacenter Networks](https://dl.acm.org/doi/10.1145/2018436.2018443)," Proc. ACM SIGCOMM'11, Computer Communication Review 41(4):50–-61 (Aug 2011)
+
+<a name="Yim11">[Yim11] Yim, Changhoon & Bovik, Alan C. "[Evaluation of Temporal Variation of Video Quality in Packet Loss Networks](https://doi.org/10.1016/j.image.2010.11.002)," Image Commun., Elsevier Science, 26(1):24-38, (Jan 2011).
 
