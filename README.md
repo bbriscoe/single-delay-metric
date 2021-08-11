@@ -67,7 +67,7 @@ Is there interest in taking this forward?
 
 <a name="Bond16"></a>[Bond16] Bondarenko, Olga; De Schepper, Koen; Tsang, Ing-Jyh; Briscoe, Bob; Petlund, Andreas & Griwodz, Carsten, "[Ultra-Low Delay for All: Live Experience, Live Analysis](https://dl.acm.org/doi/10.1145/2910017.2910633)," In Proc. ACM Multimedia Systems; Demo Session, ACM, 33:1--4 (2016)
 
-<a name="l4sdemo"></a>[l4sdemo] [Code repository](https://github.com/L4STeam/l4sdemo); [Video of GUI](https://riteproject.eu/dctth/#1511dispatchwg-gui
+<a name="l4sdemo"></a>[l4sdemo] [Code repository](https://github.com/L4STeam/l4sdemo); [Video of GUI](https://riteproject.eu/dctth/#1511dispatchwg-gui)
 
 <a name="RPM21"></a>[RPM21] Stuart Cheshire & Vidhi Goel, "[Reduce network delays for your app](https://developer.apple.com/videos/play/wwdc2021/10239/)" Apple Worldwide Developer Conference'21 (Jun 2021)
 
