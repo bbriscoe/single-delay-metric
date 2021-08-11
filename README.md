@@ -27,7 +27,7 @@ The factors that influence the choice of percentile are:
 * The degree of late packet discard that can be efficiently concealed by real-time media coding (both that which is typical today and that which could be typical in future).
 * The lag before results can be produced.
   For instance, to measure 99th percentile delay requires of the order of 1,000 packets minimum (an order of magnitude greater than 1/(1 - 0.99) = 100). In contrast 99.999th percentile requires 1,000,000 packets. At a packet rate of say 10k packet/s, they would take respectively 100 ms or 100 s.
-  * The latter would be impractical to display live, while the former makes it possible to display the 99th percentile nearly immediately after a flow has started (see for instance the open source GUI we provide to display the distribution of delays for comparison between congestion controllers and AQMs [[Bond16](#Bond16)], [[l4sdemo](https://github.com/L4STeam/l4sdemo)]).
+  * The latter would be impractical to display live, while the former makes it possible to display the 99th percentile nearly immediately after a flow has started (see for instance the open source GUI we provide to display the distribution of delays for comparison between congestion controllers and AQMs [[Bond16](#Bond16)], [[l4sdemo](#l4sdemo)]).
   * Similarly, for research or product testing where a large matrix of tests has to be conducted, it would be far more practical if each test run took 100 ms, rather than 100 s.
   * To calculate a high percentile requires a significant number of bins to hold the data. This can make a high percentile prohibitively expensive to maintain, e.g. on cost-reduced consumer-grade network equipment.
 * {ToDo: others?}
