@@ -8,6 +8,8 @@ A real-time application invariably discards any packet that arrives after the de
 
 This brief discussion paper aims to start a debate on whether a percentile is the best single delay metric and, if so, which percentile the industry should converge on.
 
+Note that the question addressed here is how to characterize a varying delay metric. That is orthogonal to the questions of what delay to measure and where to measure it. For instance, whether delay is measured in the application, at the transport layer or just at the bottleneck queue depends on the topic of interest and is an orthogonal question to the focus of this paper; how to characterize variability most succinctly and usefully in *any* of these cases.
+
 ## Don't we need two metrics?
 
 In systems that aim for a certain delay, it has been common to quote mean delay and jitter. The distribution of delay is usually asymmetric, mostly clustered around the lower end, but with a long tail of higher delays. Unfortunately jitter is insensitive to the shape of this tail, because it is dominated by the *average* variability in the bulk of the traffic around the mean. However, it doesn't matter how little or how much variability there is in all the traffic that arrives before the play-out time. It only matters how much traffic arrives too late. The size of all the lower-than-average delay should not be allowed to counterbalance a long tail of above-average delay. 
@@ -27,14 +29,14 @@ The factors that influence the choice of percentile are:
   For instance, to measure 99th percentile delay requires of the order of 1,000 packets minimum (an order of magnitude greater than 1/(1 - 0.99) = 100). In contrast 99.999th percentile requires 1,000,000 packets. At a packet rate of say 10k packet/s, they would take respectively 100 ms or 100 s.
   * The latter would be impractical to display live, while the former makes it possible to display the 99th percentile nearly immediately after a flow has started (see for instance the open source GUI we provide to display the distribution of delays for comparison between congestion controllers and AQMs [[Bond16](#Bond16)], [[l4sdemo](https://github.com/L4STeam/l4sdemo)]).
   * Similarly, for research or product testing where a large matrix of tests has to be conducted, it would be far more practical if each test run took 100 ms, rather than 100 s.
-  * To calculate a high percentile requires a significant amount of memory to bin the data accurately enough. So choosing a high percentile could be prohibitive, e.g. for consumer-grade network equipment.
+  * To calculate a high percentile requires a significant number of bins to hold the data. This can make a high percentile prohibitively expensive to maintain, e.g. on cost-reduced consumer-grade network equipment.
 * {ToDo: others?}
 
-As a strawman, we propose the 99th percentile (P99) as a lowest common denominator delay metric for the communications industry.
+As a strawman, we propose **the 99th percentile (P99)** as a lowest common denominator delay metric for the communications industry. We believe this is a workable compromise between the above somewhat conflicting requirements, but the purpose of proposing a specific number is to provoke debate, not close it off. 
 
-## Arguments against a single percentile
+## The 'Benchmark Effect'
 
-The 'benchmark effect': As soon as a single metric is settled on, researchers, product engineers, etc. tend to shape their work around the benchmark. A percentile metric seems robust against such perverse incentives, because it seems hard to contrive performance results that fall off a cliff just beyond a certain percentile. Nonetheless, even if there were a benchmark effect, it would be harmless if the percentile chosen for the benchmark realistically reflected the needs of most applications.
+As soon as a single metric is settled on, researchers, product engineers, etc. tend to shape their work around the benchmark. A percentile metric seems robust against such perverse incentives, because it seems hard to contrive performance results that fall off a cliff just beyond a certain percentile. Nonetheless, even if there were a benchmark effect, it would be harmless if the percentile chosen for the benchmark realistically reflected the needs of most applications.
 
 {ToDo: Other arguments?}
 
@@ -61,11 +63,11 @@ Is there interest in taking this forward?
 
 ## References
 
-<a name="Bond16"></a>Bondarenko, Olga; De Schepper, Koen; Tsang, Ing-Jyh; Briscoe, Bob; Petlund, Andreas & Griwodz, Carsten, "[Ultra-Low Delay for All: Live Experience, Live Analysis](https://dl.acm.org/doi/10.1145/2910017.2910633)," In Proc. ACM Multimedia Systems; Demo Session, ACM, 33:1--4 (2016)
-
 <a name="Bouch00"></a>[Bouch00] Bouch, Anna & Sasse, M. Angela, "[The case for predictable network service](https://discovery.ucl.ac.uk/id/eprint/20139/)," In Proc. Multimedia Computing and Networking Conference (MMCN'2000), 188--195 (2000)
 
-<a name="l4sdemo"></a>[l4sdemo] https://github.com/L4STeam/l4sdemo
+<a name="Bond16"></a>[Bond16] Bondarenko, Olga; De Schepper, Koen; Tsang, Ing-Jyh; Briscoe, Bob; Petlund, Andreas & Griwodz, Carsten, "[Ultra-Low Delay for All: Live Experience, Live Analysis](https://dl.acm.org/doi/10.1145/2910017.2910633)," In Proc. ACM Multimedia Systems; Demo Session, ACM, 33:1--4 (2016)
+
+<a name="l4sdemo"></a>[l4sdemo] [Code repository](https://github.com/L4STeam/l4sdemo); [Video of GUI](https://riteproject.eu/dctth/#1511dispatchwg-gui
 
 <a name="RPM21"></a>[RPM21] Stuart Cheshire & Vidhi Goel, "[Reduce network delays for your app](https://developer.apple.com/videos/play/wwdc2021/10239/)" Apple Worldwide Developer Conference'21 (Jun 2021)
 
