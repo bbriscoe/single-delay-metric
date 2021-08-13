@@ -1,18 +1,22 @@
 ### Discussion paper
 
-# A Single Common Delay Metric for the Communications Industry
+# A Single Common Metric for Varying Packet Delay
 
 ## Introduction
 
-A real-time application invariably discards any packet that arrives after the jitter buffer's play-out deadline. This applies for any real-time application, whether streamed video, interactive media or online gaming. For this broad class of applications a median delay metric is a distraction---waiting for the median delay before play-out would discard half the packets. To characterize the delay experienced by an application it would be more useful to quote the delay of a high percentile of packets. But which percentile? The 99th? The 99.99th? The 98th? The answer is application- and implementation-dependent, because it depends on how much discard can effectively be concealed (1%, 0.01% or 2% in the above examples, assuming no other losses). Nonetheless, it would be useful to settle on a single industry-wide percentile to characterize delay, even if it isn't perfect in every case.
+A real-time application invariably discards any packet that arrives after the play-out deadline, whether for streamed video, interactive media or online gaming. For this broad class of applications a median delay metric is a distraction---waiting for the median delay before play-out would discard half the packets. To characterize the delay experienced by an application it would be more useful to quote the delay of a high percentile of packets. But which percentile? The 99th? The 99.99th? The 98th? The answer is application- and implementation-dependent, because it depends on how much discard can effectively be concealed in the tradeoff with delay (1%, 0.01% or 2% in the above examples, assuming no other losses). Nonetheless, it would be useful to settle on a single industry-wide percentile to characterize delay, even if it isn't perfect in every case.
 
 This brief discussion paper aims to start a debate on whether a percentile is the best single delay metric and, if so, which percentile the industry should converge on.
 
-Note that the question addressed here is how to characterize a varying delay metric. That is orthogonal to the questions of what delay to measure and where to measure it. For instance, whether delay is measured in the application, at the transport layer or just at the bottleneck queue depends on the topic of interest and is an orthogonal question to the focus of this paper. Similarly, for delay under load, the question of which background traffic pattern to use depends on the scenario of interest and is an orthogonal question to the focus of this paper; which is solely about how to characterize delay variability most succinctly and usefully in *any* of these cases.
+Note that the question addressed here is how to characterize varying delay. That is orthogonal to the questions of what delay to measure and where to measure it. For instance, whether delay is one-way or two-way, and whether delay is measured in the application, at the transport layer or just at the bottleneck queue depends on the topic of interest and is an orthogonal question to the focus of this paper. Similarly, for delay under load, the question of which background traffic pattern to use depends on the scenario of interest and is an orthogonal question to the focus of this paper; which is solely about how to characterize delay variability most succinctly and usefully in *any* of these cases.
+
+## Target Usage
+
+The potential uses for this delay metric are similar to those for packet delay variation listed in IETF RFC 5481 [[RFC5481](#RFC5481)]. That is: service level comparison, adapting de-jitter buffer size; adapting forward error correction parameters; determining queue occupancy; etc. Note though that the goal here is to characterize the delay that is effectively experienced not just to quantify the delay variation. 
 
 ## Don't we need two metrics?
 
-In systems that aim for a certain delay, it has been common to quote mean delay and jitter. The distribution of delay is usually asymmetric, mostly clustered around the lower end, but with a long tail of higher delays. A traditional jitter metric is insensitive to the shape of this tail, because it is dominated by the *average* variability in the bulk of the traffic around the mean. However, it doesn't matter how little or how much variability there is in all the traffic that arrives before the play-out time. It only matters how much traffic arrives too late. The size of all the lower-than-average delay should not be allowed to counterbalance a long tail of above-average delay. 
+In systems that aim for a certain delay, it has been common to quote mean delay and jitter. The distribution of delay is usually asymmetric, mostly clustered around the lower end, with the median close to the minimum, but with a long tail of higher delays [[Sundar20](#Sundar20)]. Most industry jitter metrics [[Sundar20](#Sundar20)] are insensitive to the shape of this tail, because they are dominated by the *average* variability in the bulk of the traffic around the mean. However, it doesn't matter how little or how much variability there is in all the traffic that arrives before the play-out time. It only matters how much traffic arrives too late. The size of all the lower-than-average delay should not be allowed to counterbalance a long tail of above-average delay. 
 
 The argument for a single percentile delay metric is strongest for real-time applications, including real-time media [[Bouch00](#Bouch00)], [[Yim11](#Yim11)] and online games. But a delay metric is also important for non-real-time applications, e.g. web and transactional traffic more generally (e.g. RPC). Here, average delay is indeed important. But still, the user's perception is dominated by the small proportion of longer delays [[Wilson11](#Wilson11)].
 
@@ -26,16 +30,20 @@ The factors that influence the choice of percentile are:
 
 * The degree of late packet discard that can be efficiently concealed by real-time media coding (both that which is typical today and that which could be typical in future).
 * The lag before results can be produced.
-  For instance, to measure 99th percentile delay requires of the order of 1,000 packets minimum (an order of magnitude greater than 1/(1 - 0.99) = 100). In contrast 99.999th percentile requires 1,000,000 packets. At a packet rate of say 10k packet/s, they would take respectively 100 ms or 100 s.
-  * The latter would be impractical to display live, while the former makes it possible to display the 99th percentile nearly immediately after a flow has started (see for instance the open source GUI we provide to display the distribution of delays for comparison between congestion controllers and AQMs [[Bond16](#Bond16)], [[l4sdemo](#l4sdemo)]).
+  To measure a high delay percentile requires a large enough number of packet measurements so that at least ten or so fall above the percentile. For instance, when measuring the 99th percentile on average 1 in 100 packets will lie above the percentile, so at least an order of magnitude more than 100 packets (1,000 and preferably more) have to be measured. In contrast the 99.999th percentile would require at least 1,000,000 packets. At a packet rate of say 10k packet/s, they would take respectively 100 ms and 100 s. 
+  * The P99.999 would be impractical to use to adapt internal parameters, while the P99 makes it possible to start controlling parameters nearly immediately after a flow has started
+  * Similarly, it is possible to display the 99th percentile on a dashboard soon after the flow has started (see for instance the open source GUI we provide to display the P99 as well as a delay distribution plot that updates every second, for comparing different congestion controllers and Active Queue Management (AQM) algorithms [[Bond16](#Bond16)], [[l4sdemo](#l4sdemo)]).
   * Similarly, for research or product testing where a large matrix of tests has to be conducted, it would be far more practical if each test run took 100 ms, rather than 100 s.
-  * To calculate a high percentile requires a significant number of bins to hold the data. This can make a high percentile prohibitively expensive to maintain, e.g. on cost-reduced consumer-grade network equipment.
+  * At the slowest packet rate of a typical game control stream (perhaps 30 pkt/s), even the P99 is only just practical, taking at least 33 s before a result is available (the P99.999 would be completely impractical, taking over 9 hours).
+* To calculate a high percentile requires a significant number of bins to hold the data. This can make a high percentile prohibitively expensive to maintain, e.g. on cost-reduced consumer-grade network equipment.
 
 As a strawman, we propose **the 99th percentile (P99)** as a lowest common denominator delay metric for the communications industry. We believe this is a workable compromise between the above somewhat conflicting requirements, but the purpose of proposing a specific number is to provoke debate, not close it off. 
 
 ## The 'Benchmark Effect'
 
-As explained in the introduction, defining a delay metric is not just about choosing a percentile. The layer to measure and the background traffic pattern to use also have to be defined. As soon as these have been settled on, researchers, product engineers, etc. tend to optimize around this set of conditions---the so-called 'benchmark effect'. It is possible that harmonizing around one choice of percentile will lead to a benchmark effect. However, a percentile metric seems robust against such perverse incentives, because it seems hard to contrive performance results that fall off a cliff just beyond a certain percentile. Nonetheless, even if there were a benchmark effect, it would be harmless if the percentile chosen for the benchmark realistically reflected the needs of most applications. {ToDo: better wording for last sentence.}
+As explained in the introduction, defining a delay metric is not just about choosing a percentile. The layer to measure and the background traffic pattern to use also have to be defined. As soon as these have been settled on, researchers, product engineers, etc. tend to optimize around this set of conditions---the so-called 'benchmark effect'. It is possible that harmonizing around one choice of percentile will lead to a benchmark effect.
+
+However, a percentile metric seems robust against such perverse incentives, because it seems hard to contrive performance results that fall off a cliff just beyond a certain percentile. Nonetheless, the best way to mitigate any benchmark effect is to ensure that the percentile chosen for the benchmark realistically reflects the needs of most applications.
 
 ## How to articulate a percentile to the public?
 
@@ -59,7 +67,7 @@ A delay percentile is expressed as a delay, so it shares the same failings, and 
 
 The IETF seems like the appropriate body to reach consensus on the percentile to use to express delay, across countries, across standards bodies, and across industry sectors. And IPPM would seem to be the appropriate WG.
 
-Is there interest in taking this further?
+Are there arguments against this idea? Or interest in taking it further?
 
 ## References
 
@@ -69,7 +77,11 @@ Is there interest in taking this further?
 
 <a name="l4sdemo"></a>[l4sdemo] [Code repository](https://github.com/L4STeam/l4sdemo); [Video of GUI](https://riteproject.eu/dctth/#1511dispatchwg-gui)
 
+<a name="RFC5481"></a>[RFC5481] Morton, Al & Claise, Benoit, "[Packet Delay Variation Applicability Statement](https://datatracker.ietf.org/doc/html/rfc5481#section-3.3)," RFC Editor, RFC5481 (2009)
+
 <a name="RPM21"></a>[RPM21] Stuart Cheshire & Vidhi Goel, "[Reduce network delays for your app](https://developer.apple.com/videos/play/wwdc2021/10239/)" Apple Worldwide Developer Conference'21 (Jun 2021)
+
+<a name="Sundar20"></a>[Sundar20] Sundaresan, Karthik; White, Greg & Glennon, Steve, "[Latency Measurement: What is Latency and How Do We Measure It?](https://www.nctatechnicalpapers.com/Paper/2020/2020-latency-measurement)" In Proc. Fall Technical Forum and NCTA Technical Papers (2020)
 
 <a name="Wilson11"></a>[Wilson11] Wilson, Christo; Ballani, Hitesh; Karagiannis, Thomas & Rowtron, Ant, "[Better Never than Late: Meeting Deadlines in Datacenter Networks](https://dl.acm.org/doi/10.1145/2018436.2018443)," Proc. ACM SIGCOMM'11, Computer Communication Review 41(4):50–-61 (Aug 2011)
 
