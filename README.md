@@ -1,6 +1,6 @@
 ### Discussion paper
 
-# A Single Common Metric for Varying Packet Delay
+# A Single Common Metric to Characterize Varying Packet Delay
 
 ## Introduction
 
