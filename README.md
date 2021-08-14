@@ -49,12 +49,12 @@ However, a percentile metric seems robust against such perverse incentives, beca
 
 Delay is not an easy metric for public consumption, because it exhibits the following undesirable features:
 
+* It is measured in time units (ms) that seem too small to matter, and which are not common currency for a lay person
+  * The only foreseeable remedy here would seem to be tutorial material explaining the impact of even small delays on natural human interactions, and how small delays accumulate into large ones over serial flows of logic.
 * Larger is not better.
   * It might be possible to invert the metric [[RPM21](#RPM21)], but rounds per minute carries an implication that it is only for repetitive tasks, which would limit the scope of the metric
-* it is measured in time units (ms) that seem too small to matter, and which are not common currency for a lay person
-  * This might also be addressed by inverting the metric
 
-A delay percentile is expressed as a delay, so it shares the same failings, and the same potential mitigations. But a percentile carries additional baggage as well:
+A delay percentile is expressed as a delay, so it shares the same failings. But a percentile carries additional baggage as well:
 
 * It's not immediately obvious why the particular percentile has been chosen.
   * It would need some indication that it was an industry-standard metric, perhaps IETF-P99.
