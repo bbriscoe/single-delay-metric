@@ -12,7 +12,9 @@ August 2021
 
 ## Introduction
 
-A real-time application invariably discards any packet that arrives after the play-out deadline, whether for streamed video, interactive media or online gaming. For this broad class of applications a median delay metric is a distraction---waiting for the median delay before play-out would discard half the packets. To characterize the delay experienced by an application it would be more useful to quote the delay of a high percentile of packets. But which percentile? The 99th? The 99.99th? The 98th? The answer is application- and implementation-dependent, because it depends on how much discard can effectively be concealed in the tradeoff with delay (1%, 0.01% or 2% in the above examples, assuming no other losses). Nonetheless, it would be useful to settle on a single industry-wide percentile to characterize delay, even if it isn't perfect in every case.
+The most commonly reported delay metric used to characterize network performance is average delay.
+
+A real-time application generally discards any packet that arrives after the play-out deadline, whether for streamed video, interactive media or online gaming. For this broad class of applications an average delay metric or median delay metric is a distraction---waiting for the median delay before play-out would discard half the packets. To characterize the delay experienced by an application it would be more useful to quote the delay of a high percentile of packets. But which percentile? The 99th? The 99.99th? The 98th? The answer is application- and implementation-dependent, because it depends on how much discard can effectively be concealed in the tradeoff with delay (1%, 0.01% or 2% in the above examples, assuming no other losses). Nonetheless, it would be useful to settle on a single industry-wide percentile to characterize delay, even if it isn't perfect in every case.
 
 This brief discussion paper aims to start a debate on whether a percentile is the best single delay metric and, if so, which percentile the industry should converge on.
 
@@ -38,7 +40,7 @@ The factors that influence the choice of percentile are:
 
 * The degree of late packet discard that can be efficiently concealed by real-time media coding (both that which is typical today and that which could be typical in future).
 * The lag before results can be produced.
-  To measure a high delay percentile requires a large enough number of packet measurements so that at least ten or so fall above the percentile. For instance, when measuring the 99th percentile on average 1 in 100 packets will lie above the percentile, so at least an order of magnitude more than 100 packets (1,000 and preferably more) have to be measured. In contrast the 99.999th percentile would require at least 1,000,000 packets. At a packet rate of say 10k packet/s, they would take respectively 100 ms and 100 s. 
+  To measure a high delay percentile accurately requires a large enough number of packet measurements so that at least ten or so fall above the percentile. For instance, when measuring the 99th percentile on average 1 in 100 packets will lie above the percentile, so at least an order of magnitude more than 100 packets (1,000 and preferably more) have to be measured. In contrast the 99.999th percentile would require at least 1,000,000 packets. At a packet rate of say 10k packet/s, they would take respectively 100 ms and 100 s. 
   * The P99.999 would be impractical to use to adapt internal parameters, while the P99 makes it possible to start controlling parameters nearly immediately after a flow has started
   * Similarly, it is possible to display the 99th percentile on a dashboard soon after the flow has started (see for instance the open source GUI we provide to display the P99 as well as a delay distribution plot that updates every second, for comparing different congestion controllers and Active Queue Management (AQM) algorithms [[Bond16](#Bond16)], [[l4sdemo](#l4sdemo)]).
   * Similarly, for research or product testing where a large matrix of tests has to be conducted, it would be far more practical if each test run took 100 ms, rather than 100 s.
@@ -49,9 +51,9 @@ As a strawman, we propose **the 99th percentile (P99)** as a lowest common denom
 
 ## The 'Benchmark Effect'
 
-As explained in the introduction, defining a delay metric is not just about choosing a percentile. The layer to measure and the background traffic pattern to use also have to be defined. As soon as these have been settled on, researchers, product engineers, etc. tend to optimize around this set of conditions---the so-called 'benchmark effect'. It is possible that harmonizing around one choice of percentile will lead to a benchmark effect.
+As explained in the introduction, defining a delay metric is not just about choosing a percentile. The layer to measure and the background traffic pattern to use also have to be defined. As soon as these have been settled on, researchers, product engineers, etc. tend to optimize around this set of conditions---the so-called 'benchmark effect'. In fact, it could be argued that the historical use of average latency as the single metric led to issues like bufferbloat being ignored for so long.  It is possible that harmonizing around one choice of percentile will similarly lead to a benchmark effect.  
 
-However, a percentile metric seems robust against such perverse incentives, because it seems hard to contrive performance results that fall off a cliff just beyond a certain percentile. Nonetheless, the best way to mitigate any benchmark effect is to ensure that the percentile chosen for the benchmark realistically reflects the needs of most applications.
+However, a percentile metric seems robust against perverse incentives, because it seems hard to contrive performance results that fall off a cliff just beyond a certain percentile. Nonetheless, the best way to mitigate any benchmark effect is to ensure that the metric chosen for the benchmark realistically reflects the needs of most applications.
 
 ## How to articulate a percentile to the public?
 
