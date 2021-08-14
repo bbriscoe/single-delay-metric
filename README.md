@@ -1,6 +1,14 @@
+<div align="center">
+
 ### Discussion paper
 
 # A Single Common Metric to Characterize Varying Packet Delay
+
+Bob Briscoe (Ed.) (ietf@bobbriscoe.net), Greg White (G.White@CableLabs.com),<br>Vidhi Goel (Vidhi_Goel@Apple.com) and Koen De Schepper (koen.de_schepper@nokia-bell-labs.com)
+  
+August 2021
+</div>
+
 
 ## Introduction
 
