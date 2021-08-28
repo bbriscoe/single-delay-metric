@@ -26,7 +26,7 @@ The potential uses for this delay metric are similar to those for packet delay v
 
 ## Don't we need two metrics?
 
-In systems that aim for a certain delay, it has been common to quote mean delay and jitter. The distribution of delay is usually asymmetric, mostly clustered around the lower end, with the median close to the minimum, but with a long tail of higher delays [[Sundar20](#Sundar20)]. Most industry jitter metrics [[Sundar20](#Sundar20)] are insensitive to the shape of this tail, because they are dominated by the *average* variability in the bulk of the traffic around the mean. However, it doesn't matter how little or how much variability there is in all the traffic that arrives before the play-out time. It only matters how much traffic arrives too late. The size of all the lower-than-average delay should not be allowed to counterbalance a long tail of above-average delay. 
+In systems that aim for a certain delay, it has been common to quote mean delay and jitter. The distribution of delay is usually asymmetric, mostly clustered around the lower end, with the median close to the minimum, but with a long tail of higher delays [[Sundar20](#Sundar20)]. Most industry jitter metrics [[Sundar20](#Sundar20)] are insensitive to the shape of this tail, because they are dominated by the *average* variability in the bulk of the traffic around the mean. However, for real-time, it doesn't matter how little or how much variability there is in all the traffic that arrives before the play-out time. It only matters how much traffic arrives too late. The size of all the lower-than-average delay should not be allowed to counterbalance a long tail of above-average delay. 
 
 The argument for a single percentile delay metric is strongest for real-time applications, including real-time media [[Bouch00](#Bouch00)], [[Yim11](#Yim11)] and online games. But a delay metric is also important for non-real-time applications, e.g. web and transactional traffic more generally (e.g. RPC). Here, average delay is indeed important. But still, the user's perception is dominated by the small proportion of longer delays [[Wilson11](#Wilson11)].
 
@@ -38,7 +38,7 @@ Arguments can be made for more than one delay metric to better characterize the 
 
 The factors that influence the choice of percentile are:
 
-* The degree of late packet discard that can be efficiently concealed by real-time media coding (both that which is typical today and that which could be typical in future).
+* For real-time, the degree of late packet discard that can be efficiently concealed by coding or motion interpolation (both that which is typical today and that which could be typical in future).
 * The lag before results can be produced.
   To measure a high delay percentile accurately requires a large enough number of packet measurements so that at least ten or so fall above the percentile. For instance, when measuring the 99th percentile on average 1 in 100 packets will lie above the percentile, so at least an order of magnitude more than 100 packets (1,000 and preferably more) have to be measured. In contrast the 99.999th percentile would require at least 1,000,000 packets. At a packet rate of say 10k packet/s, they would take respectively 100 ms and 100 s. 
   * The P99.999 would be impractical to use to adapt internal parameters, while the P99 makes it possible to start controlling parameters nearly immediately after a flow has started
@@ -93,7 +93,7 @@ Are there arguments against this idea? Or interest in taking it further?
 
 <a name="Sundar20"></a>[Sundar20] Sundaresan, Karthik; White, Greg & Glennon, Steve, "[Latency Measurement: What is Latency and How Do We Measure It?](https://www.nctatechnicalpapers.com/Paper/2020/2020-latency-measurement)" In Proc. Fall Technical Forum and NCTA Technical Papers (2020)
 
-<a name="Wilson11"></a>[Wilson11] Wilson, Christo; Ballani, Hitesh; Karagiannis, Thomas & Rowtron, Ant, "[Better Never than Late: Meeting Deadlines in Datacenter Networks](https://dl.acm.org/doi/10.1145/2018436.2018443)," Proc. ACM SIGCOMM'11, Computer Communication Review 41(4):50–-61 (Aug 2011)
+<a name="Wilson11"></a>[Wilson11] Wilson, Christo; Ballani, Hitesh; Karagiannis, Thomas & Rowstron, Ant, "[Better Never than Late: Meeting Deadlines in Datacenter Networks](https://dl.acm.org/doi/10.1145/2018436.2018443)," Proc. ACM SIGCOMM'11, Computer Communication Review 41(4):50–-61 (Aug 2011)
 
 <a name="Wischik08"></a>[Wischik08] Wischik, Damian "Short Messages," Philosophical Transactions of the Royal Society, 366(1872):1941--1953 (2008)
 
