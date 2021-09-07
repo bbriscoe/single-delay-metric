@@ -18,7 +18,7 @@ A real-time application generally discards any packet that arrives after the pla
 
 This brief discussion paper aims to start a debate on whether a percentile is the best single delay metric and, if so, which percentile the industry should converge on.
 
-Note that the question addressed here is how to characterize varying delay. That is orthogonal to the questions of what delay to measure and where to measure it. For instance, whether delay is one-way or two-way, and whether delay is measured in the application, at the transport layer or just at the bottleneck queue depends on the topic of interest and is an orthogonal question to the focus of this paper. Similarly, for delay under load, the question of which background traffic pattern to use depends on the scenario of interest and is an orthogonal question to the focus of this paper; which is solely about how to characterize delay variability most succinctly and usefully in *any* of these cases.
+Note that the question addressed here is how to characterize varying delay. That is orthogonal to the questions of what delay to measure and where to measure it. For instance, whether delay is one-way or two-way, and whether delay is measured in the application, at the transport layer or just at the bottleneck queue depends on the topic of interest and is an orthogonal question to the focus of this paper. Similarly, for delay under load, the question of which background traffic loads and patterns to use for the scenario of interest is extremely important, but it is an orthogonal question to the narrow focus of this paper; which is solely about how to characterize delay variability most succinctly and usefully in *any* of these scenarios.
 
 ## Target Usage
 
