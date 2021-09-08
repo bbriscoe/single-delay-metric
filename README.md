@@ -50,9 +50,9 @@ The factors that influence the choice of percentile are:
 As a strawman, we propose **the 99th percentile (P99)** as a lowest common denominator delay metric for the communications industry. We believe this is a workable compromise between the above somewhat conflicting requirements, but the purpose of proposing a specific number is to provoke debate, not close it off. 
 
 <img src="log-ccdf-example.svg" width="50%" alt="Example log CCDF" title="Example log-scale Complementary Cumulative Distribution Function (CCDF) of Queue Delay" align="left">
-We emphasize that a single common metric such as the P99 would only serve as a lowest common denominator. Ideally, the whole range of percentiles would be plotted as a cumulative distribution function (CDF)---preferably a log-scaled complementary CDF to reveal the details of the tail latencies clearly (see Figure 1). Nonetheless, where nothing more than a single number is needed, we advocate at least the P99.<br><br><br>
+We emphasize that a single common metric such as the P99 would only serve as a lowest common denominator. Ideally, the whole range of percentiles would be plotted as a cumulative distribution function (CDF)---preferably a log-scaled complementary CDF to reveal the tail latencies clearly (see Figure 1). However, where nothing more than a single number is needed, we advocate at least the P99.<br><br>
 
-**Figure 1:** *Example log-scale Complementary Cumulative Distribution Function (CCDF) of Queue Delay (legend obfuscated, to focus on the visualization, not the details of the particular example)*
+**Figure 1:** *Example log-scale Complementary Cumulative Distribution Function (CCDF) of Queue Delay (legend obfuscated, to focus on the visualization, not the details of the particular example)*<br>
 
 ## The 'Benchmark Effect'
 
